@@ -4,6 +4,7 @@ import Login from './components/auth/Login';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
 import './App.css';
+import Register from './components/auth/Register';
 
 const App: React.FunctionComponent = () => {
     return(  

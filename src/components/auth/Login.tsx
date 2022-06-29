@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import axios from 'axios';
+import { useDispatch} from 'react-redux';
+import { AuthActionCreators } from '../../redux/auth/auth.action';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
   email: yup.string().email().required('Email is required'),
@@ -15,8 +18,11 @@ interface LoginFormData {
 }
 
 const  Login:React.FC = () => {
-
+    const navigate = useNavigate();
     const [error, setError] = useState<String>("");
+
+
+    const dispatch = useDispatch();
 
     const { register, handleSubmit, formState:{ errors } } = useForm<LoginFormData>({
         resolver: yupResolver(schema)
@@ -24,9 +30,9 @@ const  Login:React.FC = () => {
 
     const onSubmit = useCallback((formValues: LoginFormData) => {
         axios.post(process.env.REACT_APP_API_URI+'login',formValues).then(function (res) {
-            let response = res.data;
-            console.log(response);
+            dispatch(AuthActionCreators.loginSuccess(res.data.data.user,res.data.data.token));
             setError("");
+            navigate('/');
           })
           .catch(function (err) {
               let res = err.response.data;
