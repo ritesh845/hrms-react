@@ -2,20 +2,18 @@ import React,{useCallback,useState} from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import axios from 'axios';
 import { useDispatch} from 'react-redux';
-import { AuthActionCreators } from '../../redux/auth/auth.action';
+import {  loginSuccess} from '../../redux/auth/auth.action';
 import { useNavigate } from 'react-router-dom';
-
+import {ILoginFormData} from '../../types/auth.types'
+import AuthService from '../../services/auth.services';
+ 
 const schema = yup.object({
   email: yup.string().email().required('Email is required'),
   password: yup.string().required('Password is required'),
 }).required();
 
-interface LoginFormData {
-    email:String;
-    password:String;
-}
+
 
 const  Login:React.FC = () => {
     const navigate = useNavigate();
@@ -24,23 +22,25 @@ const  Login:React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { register, handleSubmit, formState:{ errors } } = useForm<LoginFormData>({
+    const { register, handleSubmit, formState:{ errors } } = useForm<ILoginFormData>({
         resolver: yupResolver(schema)
       });
 
-    const onSubmit = useCallback((formValues: LoginFormData) => {
-        axios.post(process.env.REACT_APP_API_URI+'login',formValues).then(function (res) {
-            dispatch(AuthActionCreators.loginSuccess(res.data.data.user,res.data.data.token));
-            setError("");
-            navigate('/');
-          })
-          .catch(function (err) {
-              let res = err.response.data;
-              if(res.code === 401){
-                  setError(res.message);
-              }
-          });
+    const onSubmit = useCallback((formValues: ILoginFormData) => {
 
+          // loginRequest(formValues);
+           AuthService.login(formValues).then(function (res :any) {
+            console.log(res);
+              dispatch(loginSuccess(res.data.user,res.data.data.token));
+              setError("");
+              navigate('/');
+            })
+            .catch(function (err) {
+                let res = err.response.data;
+                if(res.code === 401){
+                    setError(res.message);
+                }
+            });
     }, []);
 
 return (
@@ -128,4 +128,5 @@ return (
   </div>
 );
 }
+
 export default Login;

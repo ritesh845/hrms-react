@@ -1,21 +1,35 @@
 import * as React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from './components/auth/Login';
-import Home from './components/Home';
 import NotFound from './components/NotFound';
 import './App.css';
-import Register from './components/auth/Register';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
+import routes from './routes';
 
 const App: React.FunctionComponent = () => {
+    
     return(  
-        <BrowserRouter>      
-            <Routes>
-                <Route path="/" element={<Home />} />
+        <Routes>
+            <Route path='/' element={<ProtectedRoute/>}>
+                {
+                     routes.map((route, key) => {
+                        return (
+                            <Route
+                                key={key}
+                                path={route.path}
+                                element={<route.element />}
+                            />
+                        );
+                     })    
+                }
+            </Route>
+            <Route path='/' element={<PublicRoute/>}>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </BrowserRouter>
-  );
+            </Route>
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    );
 }
 
 export default App;

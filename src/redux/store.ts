@@ -1,14 +1,25 @@
-import { createStore,applyMiddleware } from '@reduxjs/toolkit'
-import rootReducer from './index';
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
 import { logger } from "redux-logger";
-import thunkMiddleware from 'redux-thunk';
+import rootReducer from './index';
 import { composeWithDevTools } from "redux-devtools-extension"
+import { persistStore } from "redux-persist";
+import { rootSaga } from "./rootSaga";
 
-export const store = createStore(
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunkMiddleware,logger))
-  )
+    composeWithDevTools(applyMiddleware(sagaMiddleware,logger))
+)
+
+const persistor = persistStore(store);
+
+sagaMiddleware.run(rootSaga);
+
+export { store, persistor };
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+// export type RootState = ReturnType<typeof store.getState>
+// // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+// export type AppDispatch = typeof store.dispatch
