@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { ReactFragment } from 'react'
 import { Route,Navigate } from 'react-router-dom';
 import routes from '../../routes';
 import Footer from './Footer';
 import Header from './Header';
+import SideBar from './SideBar';
 
 
 const DefaultLayout =  (props:any)   =>{
@@ -13,16 +14,9 @@ const DefaultLayout =  (props:any)   =>{
 
   return (
     <div className="app">
-        <Header />
-          {routes.map((route, key) => {
-            return (
-              <Route
-                key={key}
-                path={route.path}
-                element={<route.element />}
-              />
-            );
-          })}
+          <Header />
+          <SideBar />
+          
           <Navigate  to="/home" />
         <Footer />
     </div>

@@ -13,15 +13,16 @@ const App: React.FunctionComponent = () => {
         <Routes>
             <Route path='/' element={<ProtectedRoute/>}>
                 {
-                     routes.map((route, key) => {
-                        return (
+                    routes.map((route, key) => {
+                        return (                           
                             <Route
                                 key={key}
                                 path={route.path}
                                 element={<route.element />}
                             />
+                            
                         );
-                     })    
+                    })    
                 }
             </Route>
             <Route path='/' element={<PublicRoute/>}>

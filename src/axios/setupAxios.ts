@@ -15,7 +15,7 @@ const setupAxios = (store:any) => {
     (res) => {
       const { toast, message, response_type } = res.data;
       if (toast) {
-        console.log(res)
+        console.log(res,message,response_type)
       }
       return res;
     },

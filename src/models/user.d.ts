@@ -3,6 +3,10 @@ export interface UserModel {
     name:String,
     mobile:String | null,
     otp?:String,
+    gender?:String,
+    age?:Number,
+    dob?:Date,
+    status:String,
     emailVerifyAt?:DateTime,
     createdAt?:DateTime,
     updatedAt?:DateTime
