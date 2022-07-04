@@ -1,6 +1,7 @@
 export interface UserModel {
     id:Number,
     name:String,
+    email:String,
     mobile:String | null,
     otp?:String,
     gender?:String,
