@@ -7,22 +7,22 @@ const setupAxios = (store:any) => {
       auth: { token },
     } = store.getState();
     if (token) {
-      request.headers.Authorization = `JWT ${token}`;
+      request.headers.Authorization = `${token}`;
     }
     return request;
   });
-  axios.interceptors.response.use(
-    (res) => {
-      const { toast, message, response_type } = res.data;
-      if (toast) {
-        console.log(res,message,response_type)
-      }
-      return res;
-    },
-    (e) => {
-      console.log(e);
-    }
-  );
+  // axios.interceptors.response.use(
+  //   (res) => {
+  //     const { toast, message, response_type } = res.data;
+  //     if (toast) {
+  //       console.log(res,message,response_type)
+  //     }
+  //     return res;
+  //   },
+  //   (e) => {
+  //     console.log(e.response.data.message);
+  //   }
+  // );
 };
 
 export default setupAxios;

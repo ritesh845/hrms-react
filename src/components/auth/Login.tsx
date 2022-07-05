@@ -1,4 +1,4 @@
-import React,{useCallback,useState} from 'react'
+import React,{useState} from 'react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -26,22 +26,21 @@ const  Login:React.FC = () => {
         resolver: yupResolver(schema)
       });
 
-    const onSubmit = useCallback((formValues: ILoginFormData) => {
-
+    const onSubmit = (formValues: ILoginFormData) => {
           // loginRequest(formValues);
-           AuthService.login(formValues).then(function (res :any) {
-            console.log(res);
+          AuthService.login(formValues).then((res :any) => {
               dispatch(loginSuccess(res.data.user,res.data.data.token));
               setError("");
               navigate('/');
-            })
-            .catch(function (err) {
-                let res = err.response.data;
-                if(res.code === 401){
-                    setError(res.message);
-                }
-            });
-    }, []);
+          })
+          .catch(function (err) {
+            let res = err.response.data;
+            console.log(res);
+              if(res.code === 401){
+                  setError(res.message);
+              }
+          });
+    };
 
 return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

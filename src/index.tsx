@@ -5,9 +5,14 @@ import App from './App';
 import { store, persistor } from './redux/store';
 import { Provider } from 'react-redux';
 import { PersistGate } from "redux-persist/integration/react";
+
+import SetupAxios from "./axios/setupAxios";
+SetupAxios(store);
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
     <Provider store={store}>
         <BrowserRouter>
